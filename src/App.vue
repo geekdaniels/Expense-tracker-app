@@ -7,9 +7,6 @@
       </nav>
     <router-view/>
 
-    
-    <Expenses />
-
   </div>
 </template>
 
