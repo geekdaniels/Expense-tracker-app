@@ -26,7 +26,7 @@
               v-model.number="price"
               placeholder="Unit Price"
               class="price p-2"
-              type="text"
+              type="number"
               name="price"
             >
             
@@ -41,6 +41,7 @@
             <button @click="addExpense" class="mt-2 mb-2 rounded-0 btn btn-large btn-success">SUBMIT</button>
           </form>
 
+          <button @click="print" class="mt-2 mb-2 rounded-0 btn btn-large btn-success">Print</button>
           <transition-group
             tag="ul"
             name="list"
@@ -48,7 +49,7 @@
             leave-active-class="animated bounceOutDown"
           >
             <li v-for="(expense, index) in expenses" :key="expense">
-              {{expense.key}} {{expense.price}}
+              {{expense.title}} {{expense.price}}
               <i
                 class="fa fa-minus-circle"
                 v-on:click="remove(index)"
@@ -88,18 +89,27 @@ export default {
       ],
 
       expenses: [
-        { key: "Feeding", category: "Cat_name", time: "", price: "" },
-        { key: "Transport", category: "Ca_name", time: "", price: "" }
-      ]
+        { title: "Feeding", category: "Feeding", time: "", price: "200" },
+        { title: "Transport", category: "Ca_name", time: "", price: "" }
+      ],
+      feeding: [{ title: String, category: String, time: String, price: 0 }]
     };
   },
   methods: {
     addExpense() {
+      if (this.category === "Feeding") {
+        this.feeding.push({
+          title: this.expense,
+          category: this.category,
+          time: this.time,
+          price: this.price
+        });
+      }
       this.expenses.push({
-        key: this.expense,
+        title: this.expense,
         category: this.category,
         time: this.time,
-        price: "₦" + this.price
+        price: this.price
       });
       this.expense = "";
       this.price = "";
@@ -107,6 +117,17 @@ export default {
     remove(id) {
       this.expenses.splice(id, 1);
       // console.log('I work');
+    },
+    print: function() {
+      let total = JSON.stringify(this.feeding); 
+      // this.feeding.price = this.feeding.price += this.feeding.price;
+      console.log(total);
+      console.log(this.feeding.price);
+
+      this.feeding.forEach(feed => {
+        feed.price += feed.price;
+        console.log(feed.price);
+      });
     }
   }
 };
