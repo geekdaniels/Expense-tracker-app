@@ -41,7 +41,7 @@
             <button @click="addExpense" class="mt-2 mb-2 rounded-0 btn btn-large btn-success">SUBMIT</button>
           </form>
 
-          <button @click="print" class="mt-2 mb-2 rounded-0 btn btn-large btn-success">Print</button>
+          <button @click="print" class="mt-2 mb-2 rounded-0 btn btn-large btn-success">View Report</button>
           <transition-group
             tag="ul"
             name="list"
@@ -49,7 +49,7 @@
             leave-active-class="animated bounceOutDown"
           >
             <li v-for="(expense, index) in expenses" :key="expense">
-              {{expense.title}} {{expense.price}}
+              {{expense.title}} &#8358;{{expense.price}}
               <i
                 class="fa fa-minus-circle"
                 v-on:click="remove(index)"
@@ -89,19 +89,17 @@ export default {
       ],
 
       expenses: [
-        { title: "Feeding", category: "Feeding", time: "", price: "200" },
-        { title: "Transport", category: "Ca_name", time: "", price: "" }
+        { title: "Feeding", category: "Feeding", time: "", price: "200" }
       ],
-      feeding: [{ title: String, category: String, time: String, price: 0 }]
+      feeding: [{ price: 0 }],
+      transportation: [{ price: 0 }],
+      Miscellaneous: [{ price: 0 }]
     };
   },
   methods: {
     addExpense() {
       if (this.category === "Feeding") {
         this.feeding.push({
-          title: this.expense,
-          category: this.category,
-          time: this.time,
           price: this.price
         });
       }
@@ -124,10 +122,27 @@ export default {
       console.log(total);
       console.log(this.feeding.price);
 
-      this.feeding.forEach(feed => {
-        feed.price += feed.price;
-        console.log(feed.price);
-      });
+      // function sum(obj){
+      //   var sum  = 0;
+      //   for (var el in obj){
+      //     if (obj.hasOwnProperty( el )){
+      //     sum += parseFloat(obj[el]);          
+      //   }
+      //   }
+      //   return sum;
+      // }
+
+      // var summed = sum(this.feeding);
+      // console.log("sum: " + summed);
+
+      function sum(items, prop){
+        return items.reduce(function (a, b){
+          return a + b[prop];
+        }, 0);
+      };
+      let feed = this.feeding;
+      let tot = sum(feed, 'price');
+      console.log(tot);
     }
   }
 };
